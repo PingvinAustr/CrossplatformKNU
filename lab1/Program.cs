@@ -28,12 +28,36 @@ class Program
         return value;
     }
 
+    static (int a, int b, int c, string errorMessage) ReadAndValidateInput(string filePath)
+    {
+        string[] inputLines = File.ReadAllLines(filePath);
+
+        if (inputLines.Length == 0)
+            return (0, 0, 0, "Error: The input file is empty.");
+
+        var input = inputLines[0].Trim().Split();
+
+        if (input.Length != 3)
+            return (0, 0, 0, "Error: Invalid input. Please enter exactly three integer values.");
+
+        if (!int.TryParse(input[0], out int a) || !int.TryParse(input[1], out int b) || !int.TryParse(input[2], out int c))
+            return (0, 0, 0, "Error: Invalid input. Please ensure all inputs are integers.");
+
+        if (a < -104 || a > 104 || b < -104 || b > 104 || c < -104 || c > 104)
+            return (0, 0, 0, "Error: Input values out of range. Please enter values between -104 and 104.");
+
+        return (a, b, c, null);
+    }
+
     static void Main()
     {
-        var input = File.ReadAllText("..//..//..//INPUT.TXT").Split();
-        int a = int.Parse(input[0]);
-        int b = int.Parse(input[1]);
-        int c = int.Parse(input[2]);
+        var (a, b, c, errorMessage) = ReadAndValidateInput("..//..//..//INPUT.TXT");
+
+        if (errorMessage != null)
+        {
+            Console.WriteLine(errorMessage);
+            return;
+        }
 
         Console.WriteLine($"Received following values from input.txt: a={a}, b={b}, c={c}\n\nCalculating...");
 
@@ -41,7 +65,6 @@ class Program
         stopwatch.Start();
         int result = F(a, b, c);
         stopwatch.Stop();
-
 
         File.WriteAllText("..//..//..//OUTPUT.TXT", result.ToString());
         Console.WriteLine($"\nResult:{result}");
