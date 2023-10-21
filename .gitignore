@@ -286,3 +286,6 @@ crossrootfs
 .terraform
 terraform.tfstate
 terraform.tfstate.backup
+
+*.nuspec
+*.nupkg

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-class Program
+﻿public class MarsRadioStations
 {
     static double CalculateDistance((double x, double y) point1, (double x, double y) point2)
     {
@@ -8,7 +7,7 @@ class Program
         return Math.Sqrt(dx * dx + dy * dy);
     }
 
-    static double FindSmallestRadius(List<(double x, double y)> cities)
+    public static double FindSmallestRadius(List<(double x, double y)> cities)
     {
         int n = cities.Count;
         double[] minDistances = Enumerable.Repeat(double.MaxValue, n).ToArray();
@@ -49,30 +48,32 @@ class Program
         return maxEdge;
     }
 
-    static void Main()
+    public static(List<(double x, double y)> cities, string errorMessage) ReadAndValidateInput(string filePath)
     {
-        var lines = File.ReadAllLines("..//..//..//INPUT.TXT");
-        int n = int.Parse(lines[0]);
-        var cities = new List<(double x, double y)>(n);
+        string[] inputLines = File.ReadAllLines(filePath);
 
-        Console.WriteLine($"Received data from input.txt. Cities:{string.Join(",", cities)}\n\nCalculating...");
+        if (!int.TryParse(inputLines[0].Trim(), out int n) || n <= 0 || n > 1000)
+            return (null, "Error: Invalid number of cities. Please enter a positive integer less than or equal to 1000.");
+
+        if (inputLines.Length != n + 1)
+            return (null, "Error: The number of coordinate rows does not match the specified number of cities.");
+
+        var cities = new List<(double x, double y)>(n);
 
         for (int i = 1; i <= n; i++)
         {
-            var coordinates = lines[i].Split();
-            cities.Add((double.Parse(coordinates[0]), double.Parse(coordinates[1])));
+            var coordinates = inputLines[i].Trim().Split();
+
+            if (coordinates.Length != 2 ||
+                !double.TryParse(coordinates[0], out double x) || x < -10000 || x > 10000 ||
+                !double.TryParse(coordinates[1], out double y) || y < -10000 || y > 10000)
+            {
+                return (null, "Error: Invalid coordinates. Please ensure each line contains two real numbers between -10000 and 10000.");
+            }
+
+            cities.Add((x, y));
         }
 
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        double smallestRadius = FindSmallestRadius(cities);
-
-        stopwatch.Stop();
-
-        File.WriteAllText("..//..//..//OUTPUT.TXT", smallestRadius.ToString("F2"));
-
-        Console.WriteLine($"Result: {smallestRadius.ToString("F2")}");
-        Console.WriteLine($"\nExecution Time: {stopwatch.Elapsed.TotalMilliseconds} ms");
+        return (cities, null);
     }
 }
