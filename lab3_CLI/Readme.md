@@ -1,14 +1,14 @@
-## Yaroslav Chushenko - Crossplatform KNU - NuGet packages usage guide 
+﻿## Інструкція щодо використання NuGet packages 
 
-- Step 1:
-Create class library project (e.g 'lab3')
-- Step 2: 
-Create local nuget repo (e.g 'LocalNugetRepository')
-- Step 3: Configure NuGet to recognize the local repository:
-    - Open package manager console
-    - Type *nuget sources Add -Name "LocalRepo" -Source <Path_to_LocalNugetRepository_directory>* and press enter.
-- Step 4: Package class library project as nupkg:
-    - Create .nuspec file. Example of content:
+- Крок 1:
+Створти бібліотеку класів (наприклад, 'lab3')
+- Крок 2: 
+Створити локальний репозиторій nuget (наприклад, 'LocalNugetRepository')
+- Крок 3: Сконфігурувати NuGet для визнання локального репозиторію:
+    - Відкрити консоль менеджера пакетів
+    - Ввести *nuget sources Add -Name "LocalRepo" -Source <Path_to_LocalNugetRepository_directory>* та виконати цю команду.
+- Крок 4: Запакувати проєкт в форматі nupkg:
+    - Створти файл .nuspec. Приклад:
     ``` 
     <package>
     <metadata>
@@ -25,8 +25,8 @@ Create local nuget repo (e.g 'LocalNugetRepository')
     </files>
     </package>
   ```
-  - Step 5: Build class library project and pack it using e.g `nuget pack YChushenko.nuspec`
-  - Step 6: Publish the package to the local repository using e,g `nuget push YChushenko.1.0.5.nupkg -Source "LocalRepo"`
-  - Step 7: Create console application to use recently created nuget package
-  - Step 8: Go to 'Project' - 'Manage NuGet packages' - 'Browse'. Select needed package and click Install. Do not forget to click 'PackageSource'-'LocalRepo' in NuGet UI
-  - Step 9: Use NuGet in Console application.
+  - Крок 5: Виконати білд проекту та запакувати його командою `nuget pack YChushenko.nuspec`
+  - Крок 6: Опубліковати пакет в локальний репозиторій командою `nuget push YChushenko.1.0.5.nupkg -Source "LocalRepo"`
+  - Крок 7: Створити консольний застосунок для використання створенного nuget пакету
+  - Крок 8: Перейти до 'Project' - 'Manage NuGet packages' - 'Browse'. Обрати потрібний пакет й натиснути "Встановити". Перед цим треба обов'язково вибрати в полі зі списком 'PackageSource'-'LocalRepo', щоб побачити потрібний пакет.
+  - Крок 9: Використати NuGet в консольному застосунку.
